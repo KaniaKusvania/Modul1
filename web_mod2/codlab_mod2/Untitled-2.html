@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pendaftaran</title>
+    <style>
+        body {
+            background-color: #f3eac2;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: #355e3b;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .form-container input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .form-container button {
+            width: 80%;
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: darkgray;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Form Pendaftaran</h2>
+        <label for="name">Nama</label>
+        <input type="text" id="name" placeholder="Masukkan nama">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Masukkan email">
+
+        <label for="address">Alamat Lengkap</label>
+        <input type="text" id="address" placeholder="Masukkan alamat">
+
+        <button onclick="validateForm()">Daftar</button>
+    </div>
+
+    <script>
+        function validateForm() {
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let address = document.getElementById("address").value;
+
+            if (name == "" || email == "" || address == "") {
+                alert("Semua data harus diisi.");
+                return false;
+            } else {
+                alert("Form berhasil dikirim!");
+            }
+        }
+    </script>
+</body>
+</html>
