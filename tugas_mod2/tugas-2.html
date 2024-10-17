@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List App</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .todo-container {
+      width: 400px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    input#todo-input {
+      width: 70%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      cursor: pointer;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    ul#todo-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .edit-input {
+      width: 70%;
+      padding: 5px;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="todo-container">
+    <h1>To-Do List App</h1>
+    <input type="text" id="todo-input" placeholder="Add a new task" />
+    <button onclick="addTodo()">Add</button>
+    <ul id="todo-list"></ul>
+  </div>
+
+  <script>
+    function addTodo() {
+      const input = document.getElementById('todo-input');
+      const task = input.value.trim();
+
+      if (task) {
+        const todoList = document.getElementById('todo-list');
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <span>${task}</span>
+          <div>
+            <button onclick="startEditing(this)">Edit</button>
+            <button onclick="deleteTask(this)">Delete</button>
+          </div>
+        `;
+        todoList.appendChild(listItem);
+        input.value = '';
+      } else {
+        alert('Please enter a task.');
+      }
+    }
+
+    function deleteTask(button) {
+      const listItem = button.parentElement.parentElement;
+      listItem.remove();
+    }
+
+    function startEditing(button) {
+      const listItem = button.parentElement.parentElement;
+      const taskSpan = listItem.querySelector('span');
+      const taskText = taskSpan.textContent;
+
+      // Replace the span with an input field for editing
+      const editInput = document.createElement('input');
+      editInput.type = 'text';
+      editInput.value = taskText;
+      editInput.className = 'edit-input';
+
+      const saveButton = document.createElement('button');
+      saveButton.textContent = 'Save';
+      saveButton.style.backgroundColor = '#007bff'; // Blue button for Save
+      saveButton.onclick = function () {
+        saveTask(editInput, taskSpan, saveButton, button);
+      };
+
+      // Replace content with input field and Save button
+      listItem.replaceChild(editInput, taskSpan);
+      button.replaceWith(saveButton);
+    }
+
+    function saveTask(input, taskSpan, saveButton, editButton) {
+      const newTask = input.value.trim();
+      if (newTask) {
+        taskSpan.textContent = newTask;
+        const listItem = input.parentElement;
+
+        // Restore the original content
+        listItem.replaceChild(taskSpan, input);
+        saveButton.replaceWith(editButton);
+      } else {
+        alert('Task cannot be empty.');
+      }
+    }
+  </script>
+</body>
+</html>

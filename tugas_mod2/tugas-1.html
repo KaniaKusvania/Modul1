@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .calculator {
+      width: 300px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: rgb(141, 66, 145);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    input#display {
+      width: 100%;
+      height: 80px;
+      margin-bottom: 10px;
+      text-align: right;
+      font-size: 1.5rem;
+      padding: 0px;
+      border: 1px solid #aa62adf7;
+      border-radius: 5px;
+    }
+    .buttons button {
+      width: 23%;
+      height: 50px;
+      margin: 1%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border-radius: 5px;
+      background-color: #c065a1;
+      border: none;
+      transition: background 0.3s;
+    }
+    .buttons button:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" disabled />
+    <div class="buttons">
+      <button onclick="clearDisplay()">AC</button>
+      <button onclick="appendToDisplay('%')">%</button>
+      <button onclick="appendToDisplay('^')">^</button>
+      <button onclick="appendToDisplay('/')">/</button>
+      <button onclick="appendToDisplay('7')">7</button>
+      <button onclick="appendToDisplay('8')">8</button>
+      <button onclick="appendToDisplay('9')">9</button>
+      <button onclick="appendToDisplay('*')">*</button>
+      <button onclick="appendToDisplay('4')">4</button>
+      <button onclick="appendToDisplay('5')">5</button>
+      <button onclick="appendToDisplay('6')">6</button>
+      <button onclick="appendToDisplay('-')">-</button>
+      <button onclick="appendToDisplay('1')">1</button>
+      <button onclick="appendToDisplay('2')">2</button>
+      <button onclick="appendToDisplay('3')">3</button>
+      <button onclick="appendToDisplay('+')">+</button>
+      <button onclick="appendToDisplay('0')">0</button>
+      <button onclick="appendToDisplay('.')">.</button>
+      <button onclick="calculateResult()">=</button>
+    </div>
+  </div>
+
+  <script>
+    // Fungsi untuk menambahkan angka atau operator ke layar
+    function appendToDisplay(value) {
+      const display = document.getElementById('display');
+      display.value += value;
+    }
+
+    // Fungsi untuk membersihkan layar kalkulator
+    function clearDisplay() {
+      document.getElementById('display').value = '';
+    }
+
+    // Fungsi untuk menghitung hasil ekspresi
+    function calculateResult() {
+      let displayValue = document.getElementById('display').value;
+
+      try {
+        // Ganti tanda '^' dengan '**' untuk pangkat
+        displayValue = displayValue.replace('^', '**');
+
+        // Tangani operator '%' untuk menghitung persentase
+        if (displayValue.includes('%')) {
+          displayValue = handlePercentage(displayValue);
+        }
+
+        const result = eval(displayValue);
+        document.getElementById('display').value = result;
+      } catch (error) {
+        alert('Invalid Expression');
+      }
+    }
+
+    // Fungsi untuk menangani operasi persentase
+    function handlePercentage(expression) {
+      const parts = expression.split('%');
+      if (parts.length === 2 && parts[1] === '') {
+        return `${parts[0]} / 100`;
+      } else if (parts.length === 2) {
+        return `${parts[0]} * (${parts[1]} / 100)`;
+      }
+      return expression;
+    }
+
+    // Fungsi untuk menangani input dari keyboard
+    window.addEventListener('keydown', function (event) {
+      const key = event.key;
+      const validKeys = '0123456789+-*/.^%';
+
+      if (validKeys.includes(key)) {
+        appendToDisplay(key);
+      } else if (key === 'Enter') {
+        calculateResult();
+      } else if (key === 'Backspace') {
+        const display = document.getElementById('display');
+        display.value = display.value.slice(0, -1);
+      } else if (key === 'Escape') {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>
